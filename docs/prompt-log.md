@@ -1,0 +1,3 @@
+| Date | Author | Stage | Tool and model | Prompt | Summary of answer (2 lines) | Verdict (accepted / fixed / rejected) and why |
+|---|---|---|---|---|---|---|
+| 2026-11-22 | Eyad | Setup | Claude | "Read the PDF and write instructions for skills.md that make the AI explain everything and follow the doctor's rules" | First answer summarized the whole PDF instead of giving only instructions. | Fixed: I clarified that I wanted only the instructions, and the second answer was accepted. |
