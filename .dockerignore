@@ -1,0 +1,17 @@
+# Build output: Docker rebuilds these itself, and Windows binaries would clash with Linux ones
+**/bin/
+**/obj/
+
+# Git history and editor files
+.git
+.gitignore
+.vs/
+.vscode/
+
+# Docs and diagrams are not needed to run the app
+docs/
+*.md
+
+# Local secrets and env files must never end up inside an image
+.env
+**/appsettings.Development.json
