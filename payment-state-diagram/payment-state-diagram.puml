@@ -1,0 +1,21 @@
+@startuml
+[*] --> Initiated
+
+Initiated --> FundsHeld : checks pass and funds enough
+Initiated --> Rejected : check fails or funds not enough
+
+FundsHeld --> SentToBiller : request sent
+
+SentToBiller --> Completed : biller confirms
+SentToBiller --> Failed : biller refuses
+SentToBiller --> Unknown : no answer in 10 s
+
+Unknown --> Completed : biller later confirms
+Unknown --> Failed : biller later refuses or reconciliation finds no payment
+
+Failed --> Refunded : hold released
+
+Completed --> [*]
+Rejected --> [*]
+Refunded --> [*]
+@enduml
