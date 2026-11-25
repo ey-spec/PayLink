@@ -1,0 +1,81 @@
+@startuml
+left to right direction
+
+actor Customer
+actor Agent
+actor Support
+actor Admin
+actor Biller
+actor Scheduler
+
+rectangle PayLink {
+  usecase "Register" as Register
+  usecase "Log in" as Login
+  usecase "Upgrade to verified" as Upgrade
+  usecase "View balance and history" as Balance
+  usecase "Top up wallet" as TopUp
+  usecase "View billers" as Billers
+  usecase "Manage billers" as ManageBillers
+  usecase "Bill inquiry" as Inquiry
+  usecase "Pay bill" as Pay
+  usecase "Pay for customer" as AgentPay
+  usecase "Check fraud rules" as Fraud
+  usecase "Calculate fee" as Fee
+  usecase "Hold funds" as Hold
+  usecase "Call biller" as CallBiller
+  usecase "Handle timeout" as Unknown
+  usecase "Refund failed payment" as RefundFailed
+  usecase "Credit commission" as Commission
+  usecase "Request refund" as RefundRequest
+  usecase "Decide refund" as RefundDecide
+  usecase "Handle biller callback" as Callback
+  usecase "Send notification" as Notify
+  usecase "Search payment" as Search
+  usecase "Block account" as Block
+  usecase "Edit fees and limits" as Config
+  usecase "View daily totals" as Totals
+  usecase "Reconcile settlement file" as Recon
+  usecase "Write audit record" as Audit
+}
+
+Customer -- Register
+Customer -- Login
+Customer -- Balance
+Customer -- TopUp
+Customer -- Billers
+Customer -- Inquiry
+Customer -- Pay
+Customer -- RefundRequest
+
+Agent -- Login
+Agent -- TopUp
+Agent -- AgentPay
+Agent -- Commission
+
+Support -- Search
+Support -- Block
+Support -- RefundDecide
+Support -- Recon
+
+Admin -- Upgrade
+Admin -- ManageBillers
+Admin -- Config
+Admin -- Totals
+
+Biller -- CallBiller
+Biller -- Callback
+Scheduler -- Recon
+
+AgentPay ..> Pay : <<include>>
+Pay ..> Inquiry : <<include>>
+Pay ..> Fee : <<include>>
+Pay ..> Fraud : <<include>>
+Pay ..> Hold : <<include>>
+Pay ..> CallBiller : <<include>>
+Pay ..> Notify : <<include>>
+Pay ..> Audit : <<include>>
+
+Unknown ..> Pay : <<extend>>
+RefundFailed ..> Pay : <<extend>>
+Commission ..> Pay : <<extend>>
+@enduml
