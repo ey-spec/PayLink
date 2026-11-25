@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore PayLink.slnx
+
+      - name: Build
+        run: dotnet build PayLink.slnx --no-restore --configuration Release
+
+      - name: Lint (format check)
+        run: dotnet format PayLink.slnx --verify-no-changes --no-restore
+
+      - name: Test
+        run: dotnet test PayLink.slnx --no-build --configuration Release  
