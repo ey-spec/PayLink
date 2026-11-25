@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-paylink}
+      POSTGRES_USER: ${POSTGRES_USER:-paylink}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-paylink_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: src/PayLink.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=${POSTGRES_DB:-paylink};Username=${POSTGRES_USER:-paylink};Password=${POSTGRES_PASSWORD:-paylink_dev_password}"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
